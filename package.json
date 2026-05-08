@@ -1,0 +1,32 @@
+{
+  "name": "recap-project-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "db:seed": "sqlite3 data/trail-guide.db < data/seed.sql",
+    "start": "node --env-file=.env dist/app.js",
+    "dev": "tsx watch --env-file=.env src/app.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "express": "^5.2.1",
+    "nunjucks": "^3.2.4",
+    "sanitize-html": "^2.17.3",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.10.1",
+    "@types/nunjucks": "^3.2.6",
+    "@types/sanitize-html": "^2.16.1",
+    "@types/sqlite3": "^3.1.11",
+    "nodemon": "^3.1.10",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  }
+}

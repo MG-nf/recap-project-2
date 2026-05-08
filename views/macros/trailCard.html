@@ -1,0 +1,25 @@
+{% macro trailCard(trail) %}
+    <article>
+        <article>
+            <span>
+                <small>
+                    <kbd style="background-color:{{ trail.difficultyColor }}">
+                        {{ trail.difficulty}}
+                    </kbd>
+                </small>
+            </span>
+            <a href="/trails/{{ trail.slug }}">
+                <h2>{{ trail.title }}</h2>
+            </a>
+            <a href="/regions/{{ trail.regionSlug }}">
+                <h3>{{ trail.regionName }}</h3>
+            </a>
+            <p>
+                {{ trail.description | safe }}
+            </p>
+            <footer>
+                <small>{{ trail.createdAt }}</small>
+            </footer>
+        </article>
+    </article>
+{% endmacro %}

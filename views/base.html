@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Trail Guide</title>
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+            >
+    </head>
+    <body>
+        {% block header %}
+        <header class="masthead">
+            <a href="/"><h1 style="text-align: center;">Trail Guide</h1></a>
+        </header>
+        {% endblock header %}
+            <main>
+                {% block main_content %}{% endblock main_content %}
+            </main>
+        {% block footer %}
+            <footer></footer>
+        {% endblock footer %}
+
+
+    </body>
+</html>
