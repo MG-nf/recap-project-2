@@ -12,6 +12,10 @@ export interface Trail {
   created_at: number;
 }
 
+export type TrailPatch = Partial<
+  Pick<Trail, "title" | "region_id" | "difficulty" | "distance_km" | "description" | "image_url" >
+>
+
 const allTrailsQuery = `
     SELECT 
         t.*, 
@@ -80,9 +84,27 @@ export async function addTrail(trail: Omit<Trail, "id">): Promise<number> {
   return result.lastID!;
 }
 
-export async function updateTrail(id: number, title: string, slug: string, region: number, difficulty: string, distance: number, image: string, description: string) {
+export async function updateTrail(
+  id: number, 
+  title: string, 
+  slug: string, 
+  region: number, 
+  difficulty: string, 
+  distance: number, 
+  image: string, 
+  description: string
+) {
   const db = getDB();
-  db.run("UPDATE trails SET title = $title, slug = $slug, region_id = $region, difficulty = $difficulty, distance_km = $distance, image_url = $image, description = $description WHERE id=$id", 
+  db.run(`
+    UPDATE trails 
+    SET title = $title, 
+      slug = $slug, 
+      region_id = $region, 
+      difficulty = $difficulty, 
+      distance_km = $distance, 
+      image_url = $image, 
+      description = $description
+    WHERE id=$id`, 
     { 
       $title: title,
       $slug: slug,
@@ -95,6 +117,22 @@ export async function updateTrail(id: number, title: string, slug: string, regio
     }
   );
   return;
+}
+
+export async function patchTrail(id: number, entries: [string, string|number][]) {
+  const setClause = entries
+    .map(([key]) => `${key} = ?`)
+    .join(", ")
+
+  const values = entries.map(([, value]) => value)
+
+  const sql = `
+    UPDATE trails
+    SET ${setClause}
+    WHERE id = ?
+  `
+  const db = getDB();
+  await db.run(sql, [...values, id])
 }
 
 export async function deleteTrail(id: number) {

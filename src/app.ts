@@ -5,11 +5,14 @@ import { fileURLToPath } from "node:url";
 import { connectDB, closeDB } from "./models/db";
 import websiteRouter from "./routes/websiteRoutes";
 import adminRouter from "./routes/adminRoutes";
+import apiRouter from "./routes/apiRoutes";
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use("/", websiteRouter);
 app.use("/admin", adminRouter);
+app.use("/api", apiRouter);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
