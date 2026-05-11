@@ -3,15 +3,13 @@ import nunjucks from "nunjucks";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { connectDB, closeDB } from "./models/db";
+import websiteRouter from "./routes/websiteRoutes";
+import adminRouter from "./routes/adminRoutes";
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
-
-
-import websiteRouter from "./routes/websiteRoutes";
-
 app.use("/", websiteRouter);
-
+app.use("/admin", adminRouter);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

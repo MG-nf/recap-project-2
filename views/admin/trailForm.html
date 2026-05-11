@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <form action="/admin/trails/{{ trail.id }}" method="post">
+
+            <label for="trailTitle">Title</label>
+            <input type="text" id="trailTitle" name="trailTitle" value="{{ trail.title }}" />
+
+            <label for="trailRegion">Region</label>
+            <select id="trailRegion" name="trailRegion" required>
+                {% for region in regions %}
+                    <option value="{{ region.id }}"{% if trail.region_id === region.id %} selected{% endif %}>{{ region.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="trailDifficulty">Difficulty</label>
+            <select id="trailDifficulty" name="trailDifficulty" required>
+                <option value="easy"{% if trail.difficulty === 'easy' %} selected{% endif %}>Easy</option>
+                <option value="moderate"{% if trail.difficulty === 'moderate' %} selected{% endif %}>Moderate</option>
+                <option value="hard"{% if trail.difficulty === 'hard' %} selected{% endif %}>Hard</option>
+            </select>
+
+            <label for="trailDistance">Distance (km)</label>
+            <input type="text" id="trailDistance" name="trailDistance" value="{{ trail.distance_km }}" />
+
+            <label for="trailImage">Image URL</label>
+            <input type="text" id="trailImage" name="trailImage" value="{{ trail.image_url }}" />
+
+            <label for="trailDescription">Description</label>
+            <input type="text" id="trailDescription" name="trailDescription" value="{{ trail.description }}" />
+
+            <input type="submit" value="Save" />
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock main_content %}

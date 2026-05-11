@@ -29,6 +29,11 @@ export async function getTrails(): Promise<Trail[]> {
   return await db.all<Trail[]>(allTrailsQuery);
 }
 
+export async function getTrailById(id: number): Promise<Trail | undefined> {
+  const db = getDB();
+  return await db.get<Trail>(allTrailsQuery + " WHERE t.id = ?", [ id,]);
+}
+
 export async function getTrailBySlug(slug: string): Promise<Trail | undefined> {
   const db = getDB();
   return await db.get<Trail>(allTrailsQuery + " WHERE t.slug = ?", [ slug, ]);
@@ -36,6 +41,64 @@ export async function getTrailBySlug(slug: string): Promise<Trail | undefined> {
 
 export async function getTrailsByRegion(regionId: number) {
   const db = getDB();
-  return await db.all<Trail[]>(allTrailsQuery + " WHERE t.region_id = ?", [ regionId, ]);
-  
+  return await db.all<Trail[]>(allTrailsQuery + " WHERE t.region_id = ?", [ regionId, ]); 
+}
+
+export async function addTrail(trail: Omit<Trail, "id">): Promise<number> {
+  const db = getDB();
+  const result = await db.run(`
+    INSERT INTO trails (
+      title,
+      slug,
+      region_id,
+      difficulty,
+      distance_km,
+      image_url,
+      description,
+      created_at
+    ) VALUES (
+      $title,
+      $slug,
+      $region,
+      $difficulty,
+      $distance,
+      $image,
+      $description,
+      $createdAt
+    )`,
+  {
+    $title: trail.title,
+    $slug: trail.slug,
+    $region: trail.region_id,
+    $difficulty: trail.difficulty,
+    $distance: trail.distance_km,
+    $image: trail.image_url,
+    $description: trail.description,
+    $createdAt: trail.created_at
+  });
+
+  return result.lastID!;
+}
+
+export async function updateTrail(id: number, title: string, slug: string, region: number, difficulty: string, distance: number, image: string, description: string) {
+  const db = getDB();
+  db.run("UPDATE trails SET title = $title, slug = $slug, region_id = $region, difficulty = $difficulty, distance_km = $distance, image_url = $image, description = $description WHERE id=$id", 
+    { 
+      $title: title,
+      $slug: slug,
+      $region: region,
+      $difficulty: difficulty,
+      $distance: distance,
+      $image: image,
+      $description: description,
+      $id: id
+    }
+  );
+  return;
+}
+
+export async function deleteTrail(id: number) {
+  const db = getDB();
+  db.run("DELETE FROM trails WHERE id = ?", [ id ]);
+  return;
 }
